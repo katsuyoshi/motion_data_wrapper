@@ -23,8 +23,15 @@ module MotionDataWrapper
         end
       
         def new(attributes={})
+          context = App.delegate.managedObjectContext
+          self.newWithContext(context, attributes)
+        end
+
+        def newWithoutContext(attributes={})
           self.newWithContext(nil, attributes)
-        end        
+        end
+        
+        alias :new_without_context :newWithoutContext
 
         def newWithContext(context, attributes={})
           alloc.initWithEntity(entity_description, insertIntoManagedObjectContext:context).tap do |model|
@@ -34,6 +41,8 @@ module MotionDataWrapper
             end
           end
         end
+
+        alias :new_with_context :newWithContext
       
       end
     

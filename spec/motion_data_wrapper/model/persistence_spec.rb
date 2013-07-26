@@ -30,4 +30,25 @@ describe MotionDataWrapper::Model do
     manager.fileExistsAtPath(path).should == true
   end
   
+  it "should have context using #new" do
+    task = Task.new title:"Task"
+    task.managedObjectContext.should.not == nil
+  end
+  
+  it "should have context using #new_with_context" do
+    context = App.delegate.managedObjectContext
+    task = Task.new_with_context context, title:"Task"
+    task.managedObjectContext.should.not == nil
+  end
+  
+  it "should not have context using #newWithoutContext" do
+    task = Task.newWithoutContext title:"Task"
+    task.managedObjectContext.should == nil
+  end
+  
+  it "should not have context using #new_without_context" do
+    task = Task.new_without_context title:"Task"
+    task.managedObjectContext.should == nil
+  end
+  
 end
