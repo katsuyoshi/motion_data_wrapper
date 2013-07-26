@@ -8,5 +8,5 @@ guard 'motion' do
   watch(%r{^app/(.+)\.rb$})                               { |m| "spec/#{m[1]}_spec.rb" }
 
   # RubyMotion gem example
-  watch(%r{^lib/motion_data_wrapper/model/(.+)\.rb$})     { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{^lib/(.+)\.rb$})                               { |m| "spec/#{m[1]}_spec.rb" }
 end
