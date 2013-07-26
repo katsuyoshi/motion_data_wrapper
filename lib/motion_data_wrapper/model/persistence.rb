@@ -50,7 +50,15 @@ module MotionDataWrapper
         alias :new_with_context :newWithContext
       
       end
-    
+  
+      def awakeFromFetch
+        after_fetch if respondsToSelector "after_fetch"
+      end
+
+      def awakeFromInsert
+        after_fetch if respondsToSelector "after_fetch"
+      end
+  
       def destroy
       
         if context = managedObjectContext
