@@ -51,4 +51,9 @@ describe MotionDataWrapper::Model do
     task.managedObjectContext.should == nil
   end
   
+  it "should not create a task because title was not seted. and you'll see a reason which help your debugging" do
+    Task.new.save.should == false
+  end
+  
+  
 end

@@ -81,7 +81,7 @@ module MotionDataWrapper
         true
       end
     
-      def save!        
+      def save!
         unless context = managedObjectContext
           context = App.delegate.managedObjectContext
           context.insertObject(self)
@@ -90,6 +90,8 @@ module MotionDataWrapper
         before_save_callback
         error = Pointer.new(:object)
         unless context.save(error)
+# DEBUGME:
+p error[0].description
           managedObjectContext.deleteObject(self)
           raise MotionDataWrapper::RecordNotSaved, self and return false
         end
