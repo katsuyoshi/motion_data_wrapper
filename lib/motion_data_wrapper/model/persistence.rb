@@ -37,7 +37,12 @@ module MotionDataWrapper
           alloc.initWithEntity(entity_description, insertIntoManagedObjectContext:context).tap do |model|
             model.instance_variable_set('@new_record', true)
             attributes.each do |keyPath, value|
-              model.setValue(value, forKey:keyPath)
+              selector = "#{keyPath}=:"
+              if model.respondsToSelector selector
+                model.send(selector, value)
+              else
+                model.setValue(value, forKey:keyPath)
+              end
             end
           end
         end

@@ -55,5 +55,17 @@ describe MotionDataWrapper::Model do
     Task.new.save.should == false
   end
   
+  it "should set frame_string" do
+    task = Task.create title:"Task", frame:CGRectMake(0, 10, 20, 30)
+    task.frame_string.should == "{{0, 10}, {20, 30}}"
+  end
+  
+  it "should retrieve frame when fetched" do
+    task = Task.create title:"Task", frame:CGRectMake(0, 10, 20, 30)
+    task.managedObjectContext.reset
+    Task.first.frame.should == CGRectMake(0, 10, 20, 30)
+  end
+  
+  
   
 end
