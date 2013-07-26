@@ -6,4 +6,9 @@ class NSSet
     self.sortedArrayUsingDescriptors descriptors
   end
 
+  def where(format, *args)
+    predicate = NSPredicate.predicateWithFormat(format.gsub("?", "%@"), argumentArray:args)
+    self.filteredSetUsingPredicate predicate
+  end
+
 end

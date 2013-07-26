@@ -6,4 +6,9 @@ class NSArray
     self.sortedArrayUsingDescriptors descriptors
   end
 
+  def where(format, *args)
+    predicate = NSPredicate.predicateWithFormat(format.gsub("?", "%@"), argumentArray:args)
+    self.filteredArrayUsingPredicate predicate
+  end
+
 end
