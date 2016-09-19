@@ -21,9 +21,18 @@ module MotionDataWrapper
 
         model.entities.each do |entity|
           begin
-            Kernel.const_get(entity.name)
-            entity.setManagedObjectClassName(entity.name)
-
+            # クラス名がImageだとCoreDataが下エラーを出して扱えない
+            #　'NSInternalInconsistencyException', reason: '"Image" is not a subclass of NSManagedObject.'
+            # モデルクラスでMDを後につけたクラスを使用する様にし、サブクラスで元のクラスにして回避する
+            # class ImageMD < MotionDataWrapper::Model  ... end
+            # class Image < ImageMD
+            name = entity.name
+            case name
+            when "Image"
+              name = name + "MD"
+            end
+            Kernel.const_get(name)
+            entity.setManagedObjectClassName(name)
           rescue NameError
             entity.setManagedObjectClassName("Model")
           end
@@ -54,11 +63,11 @@ module MotionDataWrapper
         support_dir.URLByAppendingPathComponent("#{sqlite_store_name}.sqlite")
       end
     end
-    
+
     def sqlite_path
       @sqlite_path || File.join(App.documents_path, "#{sqlite_store_name}.sqlite")
     end
-    
+
     def sqlite_path= path
       @sqlite_path = path
     end
