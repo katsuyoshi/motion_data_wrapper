@@ -2,18 +2,18 @@
 describe MotionDataWrapper::Model do
 
   before do
-    @delegate = App.delegate
+    @delegate = BubbleWrap::App.delegate
   end
 
   after do
     clean_core_data
   end
-  
+
   it "should create task" do
     Task.create title:"Task1"
     Task.all.size.should == 1
   end
-  
+
   it "should be stored to app support dir" do
     # prepare directory
     manager = NSFileManager.defaultManager
@@ -29,37 +29,37 @@ describe MotionDataWrapper::Model do
 
     manager.fileExistsAtPath(path).should == true
   end
-  
+
   it "should have context using #new" do
     task = Task.new title:"Task"
     task.managedObjectContext.should.not == nil
   end
-  
+
   it "should have context using #new_with_context" do
-    context = App.delegate.managedObjectContext
+    context = BubbleWrap::App.delegate.managedObjectContext
     task = Task.new_with_context context, title:"Task"
     task.managedObjectContext.should.not == nil
   end
-  
+
   it "should not have context using #newWithoutContext" do
     task = Task.newWithoutContext title:"Task"
     task.managedObjectContext.should == nil
   end
-  
+
   it "should not have context using #new_without_context" do
     task = Task.new_without_context title:"Task"
     task.managedObjectContext.should == nil
   end
-  
+
   it "should not create a task because title was not seted. and you'll see a reason which help your debugging" do
     Task.new.save.should == false
   end
-  
+
   it "should set frame_string" do
     task = Task.create title:"Task", frame:CGRectMake(0, 10, 20, 30)
     task.frame_string.should == "{{0, 10}, {20, 30}}"
   end
-  
+
   it "should retrieve frame when fetched" do
     task = Task.create title:"Task", frame:CGRectMake(0, 10, 20, 30)
     task.managedObjectContext.reset
@@ -72,7 +72,7 @@ describe MotionDataWrapper::Model do
     # called after_fetch, then the frame was setuped.
     newTask.frame.should == CGRectMake(0, 10, 20, 30)
   end
-  
-  
-  
+
+
+
 end

@@ -15,7 +15,7 @@ Motion::Project::App.setup do |app|
   app.version = "0.99.0"
 
   # Devices
-  app.deployment_target = "6.0"
+  app.deployment_target = "8.1"
 
   app.detect_dependencies = true
 

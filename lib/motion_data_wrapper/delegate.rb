@@ -47,7 +47,7 @@ module MotionDataWrapper
     end
 
     def sqlite_store_name
-      App.name
+      BubbleWrap::App.name
     end
 
     def sqlite_url
@@ -58,14 +58,14 @@ module MotionDataWrapper
         unless support_dir = NSFileManager.defaultManager.URLForDirectory(NSApplicationSupportDirectory, inDomain: NSUserDomainMask, appropriateForURL: nil, create: true, error: error_ptr)
           raise "error creating application support folder: #{error_ptr[0]}"
         end
-        support_dir = support_dir.URLByAppendingPathComponent("/#{App.name}")
+        support_dir = support_dir.URLByAppendingPathComponent("/#{BubbleWrap::App.name}")
         Dir.mkdir(support_dir.path) unless Dir.exists?(support_dir.path)
         support_dir.URLByAppendingPathComponent("#{sqlite_store_name}.sqlite")
       end
     end
 
     def sqlite_path
-      @sqlite_path || File.join(App.documents_path, "#{sqlite_store_name}.sqlite")
+      @sqlite_path || File.join(BubbleWrap::App.documents_path, "#{sqlite_store_name}.sqlite")
     end
 
     def sqlite_path= path

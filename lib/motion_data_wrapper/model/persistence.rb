@@ -1,13 +1,13 @@
 module MotionDataWrapper
   class Model < NSManagedObject
     module Persistence
-    
+
       def self.included(base)
         base.extend(ClassMethods)
       end
- 
+
       module ClassMethods
-      
+
         def create(attributes={})
           begin
             model = create!(attributes)
@@ -21,16 +21,16 @@ module MotionDataWrapper
           model.save!
           model
         end
-      
+
         def new(attributes={})
-          context = App.delegate.managedObjectContext
+          context = BubbleWrap::App.delegate.managedObjectContext
           self.newWithContext(context, attributes)
         end
 
         def newWithoutContext(attributes={})
           self.newWithContext(nil, attributes)
         end
-        
+
         alias :new_without_context :newWithoutContext
 
         def newWithContext(context, attributes={})
@@ -48,9 +48,9 @@ module MotionDataWrapper
         end
 
         alias :new_with_context :newWithContext
-      
+
       end
-  
+
       def awakeFromFetch
         after_fetch if respondsToSelector "after_fetch"
       end
@@ -58,9 +58,9 @@ module MotionDataWrapper
       def awakeFromInsert
         after_fetch if respondsToSelector "after_fetch"
       end
-  
+
       def destroy
-      
+
         if context = managedObjectContext
           before_destroy_callback
           context.deleteObject(self)
@@ -68,23 +68,23 @@ module MotionDataWrapper
           context.save(error)
           after_destroy_callback
         end
-      
+
         @destroyed = true
         freeze
       end
-    
+
       def destroyed?
         @destroyed || false
       end
-    
+
       def new_record?
         @new_record || false
       end
-    
+
       def persisted?
         !(new_record? || destroyed?)
       end
-    
+
       def save
         begin
           save!
@@ -93,10 +93,10 @@ module MotionDataWrapper
         end
         true
       end
-    
+
       def save!
         unless context = managedObjectContext
-          context = App.delegate.managedObjectContext
+          context = BubbleWrap::App.delegate.managedObjectContext
           context.insertObject(self)
         end
 
@@ -113,9 +113,9 @@ p error[0].description
 
         true
       end
-  
+
       private
-  
+
       def before_save_callback
         before_save if respondsToSelector "before_save"
         @is_new_record = new_record?
@@ -125,7 +125,7 @@ p error[0].description
           before_update if respondsToSelector "before_update"
         end
       end
-  
+
       def after_save_callback
         if @is_new_record
           after_create if respondsToSelector "after_create"
@@ -138,11 +138,11 @@ p error[0].description
       def before_destroy_callback
         before_destroy if respondsToSelector "before_destroy"
       end
-  
+
       def after_destroy_callback
         after_destroy if respondsToSelector "after_destroy"
       end
-  
+
     end
   end
 end

@@ -14,7 +14,7 @@ module MotionDataWrapper
 
     private
     def context
-      @ctx || App.delegate.managedObjectContext
+      @ctx || BubbleWrap::App.delegate.managedObjectContext
     end
 
     end
